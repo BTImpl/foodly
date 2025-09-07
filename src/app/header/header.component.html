@@ -1,11 +1,14 @@
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #011233;">
   <div class="container-fluid">
+    <img style="height: 35px;" src="assets/images/foodly_logo.png" />
     <a class="navbar-brand" routerLink="/" style="color: white;">Foodly</a>
 
     <div class="d-flex align-items-center">
       <div *ngIf="user; else notLoggedIn" class="dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0px;">
+        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0px;">
+         {{ user.displayName }}
           <img [src]="user.photoURL" alt="Profilkép" width="30" height="30" style="border-radius: 50%; cursor: pointer;">
+
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
           <li><a class="dropdown-item" (click)="logout()">Kijelentkezés</a></li>
