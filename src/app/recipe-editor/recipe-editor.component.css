@@ -1,0 +1,15 @@
+.under-btn-left {
+  position: fixed;
+  bottom: 25px; /* Az oldal aljától 20px-re */
+  left: 5px; /* Az oldal jobb szélétől 20px-re */
+  z-index: 1000; /* A gomb mindig a többi elem fölött legyen */
+
+}
+
+.under-btn-right {
+  position: fixed;
+  bottom: 25px; /* Az oldal aljától 20px-re */
+  right: 5px; /* Az oldal jobb szélétől 20px-re */
+  z-index: 1000; /* A gomb mindig a többi elem fölött legyen */
+
+}

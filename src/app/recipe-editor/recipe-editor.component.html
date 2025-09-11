@@ -29,10 +29,8 @@
       <textarea id="description" class="form-control" [(ngModel)]="recipe.description" name="description" rows="3"
         required></textarea>
     </div>
-    <div class="ms-3">
-      <button type="submit" class="btn btn-success me-1">Save</button>
-      <button type="button" class="btn btn-secondary" (click)="toggleEditMode()">Cancel</button>
-    </div>
+    <button type="button" class="btn btn-secondary under-btn-left" (click)="toggleEditMode()">Cancel</button>
+   <button type="submit" class="btn btn-success under-btn-right">Save</button>
 
   </form>
 </div>
@@ -57,7 +55,7 @@
       </ul>
       <h4>Description</h4>
       <p>{{ recipe.description }}</p>
-      <button type="button" class="btn btn-primary" (click)="back()">
+      <button type="button" class="btn btn-secondary under-btn-left" (click)="back()">
         <i class="fa-solid fa-arrow-left"></i> Back
       </button>
     </div>
