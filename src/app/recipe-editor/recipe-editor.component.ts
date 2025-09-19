@@ -8,19 +8,18 @@ import { RecipeService } from '../service/recipe.service';
 @Component({
   selector: 'app-recipe-editor',
   standalone: true,
-    imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './recipe-editor.component.html',
-  styleUrls: ['./recipe-editor.component.css']
+  styleUrls: ['./recipe-editor.component.css'],
 })
 export class RecipeEditorComponent implements OnInit {
   recipe: Recipe = {
-      title: '',
-      ingredients: [{ name: '', quantity: 0, quantityType: '' }],
-      description: '',
-      timestamp: new Date()
-    };
-
-
+    title: '',
+    ingredients: [{ name: '', quantity: 0, quantityType: '' }],
+    description: '',
+    calories: 0,
+    timestamp: new Date(),
+  };
 
   isEditMode = false;
 
@@ -28,8 +27,7 @@ export class RecipeEditorComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private recipeService: RecipeService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     const recipeId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -42,7 +40,7 @@ export class RecipeEditorComponent implements OnInit {
     }
   }
 
-     addIngredient() {
+  addIngredient() {
     this.recipe.ingredients.push({ name: '', quantity: 0, quantityType: '' });
   }
 
@@ -51,12 +49,11 @@ export class RecipeEditorComponent implements OnInit {
   }
 
   toggleEditMode() {
-    if(this.recipe.id){
-this.isEditMode = !this.isEditMode;
+    if (this.recipe.id) {
+      this.isEditMode = !this.isEditMode;
     } else {
       this.back();
     }
-
   }
 
   back() {
@@ -64,7 +61,7 @@ this.isEditMode = !this.isEditMode;
   }
 
   onSubmit() {
-    console.log('Recipe saved:', this.recipe);
+    this.recipeService.save(this.recipe);
     this.toggleEditMode();
   }
 }

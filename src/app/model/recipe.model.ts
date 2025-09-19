@@ -5,5 +5,6 @@ export interface Recipe {
   title: string;
   ingredients: Ingredient[];
   timestamp?: Date;
+  calories?: number;
   description?: string;
 }

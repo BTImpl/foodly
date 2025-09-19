@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Recipe } from '../model/recipe.model';
 import { Observable } from 'rxjs';
 
-import { Firestore, collection, collectionData, doc, addDoc, deleteDoc, docData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, addDoc, deleteDoc, docData, updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -13,31 +12,50 @@ export class RecipeService {
 
   constructor(private firestore: Firestore) {}
 
-  // Új recept hozzáadása
-  addRecipe(recipe: Recipe) {
-   // return this.firestore.collection(this.collectionName).add(recipe);
+  save(recipe: Recipe) {
+    if (recipe.id) {
+      this.updateRecipe(recipe.id, recipe);
+    } else {
+      this.addRecipe(recipe);
+    }
   }
 
-  // Összes recept lekérése
   getRecipes() : Observable<Recipe[]> {
-    const recipeCollection = collection(this.firestore, 'recipes');
-    return collectionData(recipeCollection, { idField: 'id' }) as Observable<Recipe[]>;
+    return collectionData(this.getRecipeCollection(), { idField: 'id' }) as Observable<Recipe[]>;
   }
 
-  // Egy recept lekérése ID alapján
   getRecipeById(id: string): Observable<Recipe> {
-    const recipeDoc = doc(this.firestore, `${this.collectionName}/${id}`);
-    return docData(recipeDoc, { idField: 'id' }) as Observable<Recipe>;
+    return docData(this.getRecipeDoc(id), { idField: 'id' }) as Observable<Recipe>;
   }
 
-  // Recept frissítése
-  updateRecipe(id: string, recipe: Recipe) {
-    //return this.firestore.collection(this.collectionName).doc(id).update(recipe);
-  }
-
-  // Recept törlése
   deleteRecipe(id: string) {
-    const recipeDoc = doc(this.firestore, `recipes/${id}`);
-    deleteDoc(recipeDoc).catch(err => console.error(err));
+    deleteDoc(this.getRecipeDoc(id)).catch(err => console.error(err));
+  }
+
+  private addRecipe(recipe: Recipe) {
+    if (recipe.title && recipe.ingredients.length > 0) {
+      addDoc(this.getRecipeCollection(), { ...recipe, timestamp: new Date() })
+        .then(() => {
+          recipe = {
+            title: '',
+            ingredients: [{ name: '', quantity: 0, quantityType: '' }],
+            description: '',
+            timestamp: new Date()
+          };
+        })
+        .catch(err => console.error(err));
+    }
+  }
+
+  private updateRecipe(id: string, recipe: Recipe) {
+    updateDoc(this.getRecipeDoc(id), { ...recipe, timestamp: new Date() });
+  }
+
+  private getRecipeCollection() {
+    return collection(this.firestore, this.collectionName);
+  }
+
+  private getRecipeDoc(id: string) {
+    return doc(this.firestore, `${this.collectionName}/${id}`);
   }
 }
