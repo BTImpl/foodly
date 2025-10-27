@@ -37,6 +37,7 @@ export class RecipeListComponent implements OnInit {
   deleteRecipe(recipe: Recipe) {
     if (recipe.id) {
       this.recipeService.deleteRecipe(recipe.id);
+      this.toggleDeleteMode();
     }
   }
 }
